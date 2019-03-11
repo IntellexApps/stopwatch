@@ -1,0 +1,21 @@
+{
+	"name": "intellex/stopwatch",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Ivan Sabo",
+			"email": "sabo@intellex.rs"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Intellex\\Stopwatch\\": "src\\"
+		}
+	},
+	"require-dev": {
+		"intellex/debugger": "*"
+	},
+	"require": {
+		"php": ">=5.6"
+	}
+}
