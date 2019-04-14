@@ -1,7 +1,5 @@
 <?php namespace Intellex\Stopwatch\Exception;
 
-use Intellex\Stopwatch\StopwatchExceptionHandling;
-
 /**
  * Class StopwatchException base exception for all exceptions thrown by the stopwatch.
  *
