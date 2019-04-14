@@ -1,6 +1,4 @@
-<?php namespace Intellex\Stopwatch;
-
-use Intellex\Stopwatch\Exception\StopwatchException;
+<?php namespace Intellex\Stopwatch\Exception;
 
 /**
  * Interface StopwatchExceptionHandling defines the protocol for handling stopwatch exceptions and
