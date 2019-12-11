@@ -13,11 +13,23 @@ use Intellex\Stopwatch\Exception\StopwatchException;
  */
 class Stopwatch {
 
+	/** @var bool True if the stopwatch is enabled, false to disable it. */
+	private static $enabled = true;
+
 	/** @var Measurement[] The list of all stopwatches, active and inactive. */
 	private static $measurements = [];
 
 	/** @var AggregateMeasurement[] The index of all aggregated measurements, where key is the name. */
 	private static $aggregatedMeasurements = [];
+
+	/**
+	 * Enable or disable the stopwatch.
+	 *
+	 * @param bool $enabled True if the stopwatch is enabled, false to disable it.
+	 */
+	public static function enable($enabled = true) {
+		static::$enabled = $enabled;
+	}
 
 	/**
 	 * Get the current timestamp, in milliseconds.
@@ -42,9 +54,14 @@ class Stopwatch {
 	 *
 	 * @param string $name The name of the measurement.
 	 *
-	 * @return Measurement The started measurement.
+	 * @return Measurement|null The started measurement, or null if the measurements are disabled.
 	 */
 	public static function start($name) {
+
+		// Make sure the measurements are enabled
+		if (!static::$enabled) {
+			return null;
+		}
 
 		// New measurement od active one
 		if (sizeof(static::$measurements)) {
@@ -54,7 +71,7 @@ class Stopwatch {
 			}
 		}
 
-		// Add as nea measurement
+		// Add as new measurement
 		static::$measurements[] = new Measurement($name);
 		return end(static::$measurements);
 	}
@@ -64,9 +81,15 @@ class Stopwatch {
 	 *
 	 * @param string $name The name of the measurement.
 	 *
-	 * @return Measurement|null The measurement that was stopped, or null on error.
+	 * @return Measurement|null The measurement that was stopped, or null on error or disabled.
 	 */
 	public static function stop($name) {
+
+		// Make sure the measurements are enabled
+		if (!static::$enabled) {
+			return null;
+		}
+
 		try {
 
 			// Validate that we have an active measurement
@@ -104,6 +127,12 @@ class Stopwatch {
 	 * @param string $name The name of the mark.
 	 */
 	public static function markTime($name) {
+
+		// Make sure the measurements are enabled
+		if (!static::$enabled) {
+			return;
+		}
+
 		try {
 
 			// Validate that we have an active measurement
@@ -127,9 +156,17 @@ class Stopwatch {
 	 *
 	 * @param string $name The name of the loop measurement.
 	 *
-	 * @return AggregateMeasurement The looped measurement.
+	 * @return AggregateMeasurement|null The looped measurement, or null if measurements are
+	 *                                   disabled.
 	 */
 	public static function startAggregate($name) {
+
+		// Make sure the measurements are enabled
+		if (!static::$enabled) {
+			return null;
+		}
+
+		// Initialize the measurement
 		if (!isset(static::$aggregatedMeasurements[$name])) {
 			static::$aggregatedMeasurements[$name] = new AggregateMeasurement($name);
 		}
@@ -142,9 +179,16 @@ class Stopwatch {
 	 *
 	 * @param string $name The name of the loop measurement.
 	 *
-	 * @return AggregateMeasurement The looped measurement.
+	 * @return AggregateMeasurement|null The looped measurement, or null if measurements are
+	 *                                   disabled.
 	 */
 	public static function pauseAggregate($name) {
+
+		// Make sure the measurements are enabled
+		if (!static::$enabled) {
+			return null;
+		}
+
 		return static::$aggregatedMeasurements[$name]->pause();
 	}
 
@@ -158,3 +202,6 @@ class Stopwatch {
 	}
 
 }
+
+// Global enable or disable
+Stopwatch::enable(true);

@@ -197,7 +197,7 @@ class Measurement {
 		// Prepare the characters
 		$start = $level ? ($last ? '└───' : '├───') : null;
 
-		$dashes = str_repeat('    ', max(0, $level - 1)) . $start;
+		$dashes = str_repeat('│   ', max(0, $level - 1)) . $start;
 		$lines = $dashes . $this->getName() . ': ' . round($this->getTime(), $round) . PHP_EOL;
 
 		// Print children
